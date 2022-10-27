@@ -1,0 +1,28 @@
+.form {
+    margin-top: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.form input {
+    height: 38px;
+    padding: 0 20px;
+    font-size: 20px;
+    border: 1px solid #ccc;
+    min-width: 80%;
+}
+
+.form button {
+    cursor: pointer;
+    margin-left: 5px;
+    border-radius: 3px;
+    border: none;
+    height: 40px;
+    width: 40px;
+    background: #f04c64;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
