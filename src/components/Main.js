@@ -1,90 +1,127 @@
 import React, { Component } from "react";
 import Form from "./Form";
-import Tarefas from "./Tarefas";
+import Keypad from "./Keypad";
+import getPrice from "../services/itemprvda";
+import getImagem from '../services/itemimagem'
+
+import AlertDialog from "./Dialog";
+
 
 import './Main.css';
+import './Keypad/Keypad.css'
 
 
-export default class Main extends Component {
+
+
+const Home = class extends Component {
     state = {
-        novaTarefa: '',
-        listaTarefas: [],
+        inputBar: '',
+        priceShow: '',
+        image64: '',
+        tipo: '',
+        descricao: '',
     };
 
     handleChanged = (event) => {
         this.setState({
-            novaTarefa: event.target.value,
+            inputBar: event.target.value,
         });
     }
 
-    handleSubmit = (event) => {
-        event.preventDefault();
-        const { listaTarefas, index } = this.state;
-        let { novaTarefa } = this.state;
-        novaTarefa = novaTarefa.trim();
-        if(listaTarefas.indexOf(novaTarefa) !== -1) return;
-        const novasTarefas = [...listaTarefas];
-        if(index === -1) {
-            if(novaTarefa !== ''){
-                this.setState({
-                    listaTarefas: [...novasTarefas, novaTarefa],
-                    novaTarefa: '',
-                })
-            } else {
-                this.setState({
-                    novaTarefa: '',
-                })
-            }
-        } else {
-            novasTarefas[index] = novaTarefa;
+    handleDelete = () => {
+        const { inputBar } = this.state;
+        const backspace = inputBar.substring(0, inputBar.length - 1)
+        this.setState({
+            inputBar: backspace,
+        })
+    }
 
+    handleButton = (event) => {
+        const { inputBar } = this.state;
+        let novoInput = inputBar + event.target.value;
+        this.setState({
+            inputBar: novoInput,
+        })
+    }
+
+    handleWipe = () => {
+        this.setState({
+            inputBar: ''
+        })
+    }
+
+    
+
+    handleShow = (iditem) => {
+        const {priceShow, tipo, image64, descricao} = this.state
+        getPrice(iditem).then((response) => {
+                if(response[0].PRECO !== undefined){
+                    getImagem(iditem).then((result)=>{
+                        if(result == ''){
+                            console.log('sem imagem')
+                            this.setState({
+                                tipo: 'no-image',
+                            })
+                        }else{
+                            console.log('com imagem')
+                            this.setState({
+                                tipo: 'base64',
+                                image64: result,
+                            })
+                        }
+                    })
+                    this.setState({
+                        priceShow: response[0].PRECO,
+                        descricao: response[0].DESCRICAO,
+                        inputBar: ''
+                    })                    
+                }
+        })
+        .catch((err) => {
             this.setState({
-                listaTarefas: [...novasTarefas],
-                index: -1,
-
-
-
+                priceShow: 'Produto não encontrado',
+                tipo: 'not-found',
+                inputBar: '',
+                descricao: '',
             })
-        }
-        
-        
-       
-    }
-
-    handleDelete = (event, index) => {
-        const {listaTarefas} = this.state;
-        const novasTarefas = [...listaTarefas];
-        novasTarefas.splice(index, 1);
-
-        this.setState({
-            listaTarefas: [...novasTarefas ]
         })
     }
-    handleEdit = (event, index) => {
-        const { listaTarefas } = this.state;
-        this.setState({
-            index,
-            novaTarefa: listaTarefas[index]
-        })
 
-    }
+    // handleGetImage = (iditem) =>{
+    //     const {image64} = this.state;
+    //     getImagem(iditem).then((response)=> {
+    //         this.setState({
+    //             image64: response
+    //         })
+    //     })
+    // }
 
     render() {
-        const { novaTarefa, listaTarefas } = this.state;
-
+        const { inputBar, priceShow , image64, tipo, descricao } = this.state;
         return (
             <div className="main">
-                <h1>Lista de Tarefas</h1>
-                <Form handleSubmit={this.handleSubmit}
-                handleChanged={this.handleChanged}
-                novaTarefa={novaTarefa}
-                 />
-                 <Tarefas listaTarefas={listaTarefas}
-                 handleDelete={this.handleDelete}
-                 handleEdit={this.handleEdit}/>
+                <Form handleChanged={this.handleChanged}
+                    inputBar={inputBar}
+                />
+                <div className="keypad">
+                    <Keypad
+                        handleButton={this.handleButton}
+                        handleWipe={this.handleWipe}
+                        handleDelete={this.handleDelete}
+                        handleSearch={this.handleSearch} />
+                </div>
+                <div className="keypad-line">
+                <span ><AlertDialog price={priceShow}
+                        handleShow={this.handleShow}
+                        iditem={inputBar}
+                        handleGetImage={this.handleGetImage}
+                        image={image64}
+                        tipo={tipo}
+                        descricao={descricao}/></span>
                 
+                </div>
 
-                
+
             </div>
 
 
@@ -93,3 +130,5 @@ export default class Main extends Component {
 
 
 }
+
+export default Home;

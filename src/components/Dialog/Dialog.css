@@ -1,0 +1,56 @@
+
+.search {
+    display: none;
+    height: 70px;
+    width: 280px;
+}
+#alert-dialog-title {
+    height: 30px;
+    font-weight: 700;
+    text-align: center;
+    font-family: 'Ubuntu';
+    background: #e9e9e9;
+}
+
+#alert-dialog-description {
+    color: rgb(80, 79, 79);
+    margin-top: -15px;
+    font-size: 100px;
+    font-family: 'Ubuntu';
+    text-align: center;
+}
+
+#alert-dialog-description h3 {
+    color: rgb(167, 167, 167);
+    font-size: 30px;
+    margin-top: 20px;
+    margin-bottom: -160px;
+}
+
+#alert-dialog-description h2 {
+    color: rgb(80, 79, 79);
+    font-size: 30px;
+    margin-top: 20px;
+    margin-bottom: -160px;
+}
+
+.image{
+    margin-top: -10px;
+    max-height: 350px;
+}
+
+.not-found{
+    margin-top: -80px;
+    height: 500px;
+}
+
+.loader {
+    border: 10px solid #f3f3f3;
+    border-top: 10px solid #3498db;
+    border-radius: 50%;
+    width: 80px;
+    height: 80px;
+    animation: spin 1s linear infinite;
+  }
+
+  

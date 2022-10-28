@@ -1,0 +1,24 @@
+.keypad{
+    margin-top: 45px;
+    
+}
+.keypad-line{
+    margin-top: 5px;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+}
+.keys {
+    font-family: 'Ubuntu';
+    font-weight: 500;
+    cursor: pointer;
+    border-radius: 10px;
+    text-align: center;
+    border: none;
+    font-size: 40px;
+    margin: 0px 3px;
+    height: 90px;
+    width: 90px;
+    transition: all 500ms;
+}
+

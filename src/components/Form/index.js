@@ -1,27 +1,25 @@
 import React from 'react';
-import { FaPlus } from 'react-icons/fa';
 import PropTypes from 'prop-types';
 
 import './Form.css';
 
-export default function Form({handleSubmit, handleChanged, novaTarefa}) {
+export default function Form({handleChanged, inputBar}) {
     return (
-        <form action="#" className="form" onSubmit={handleSubmit}>
+        <form action="#" className="form" >
             <input onChange={handleChanged}
                 type="text"
-                value={novaTarefa} />
-            <button type="submit"><FaPlus /></button>
+                value={inputBar} 
+                readOnly="readonly"
+                placeholder=" Digite o Código"/>
         </form>
     );
 }
-
 // Form.defaultProps = {
-//     novaTarefa: 'Valor Padrão',
+//     inputBar: 'Valor Padrão',
 // }
 
 Form.propTypes = {
-    handleSubmit: PropTypes.func.isRequired,
     handleChanged: PropTypes.func.isRequired,
-    novaTarefa: PropTypes.string.isRequired,
+    inputBar: PropTypes.string.isRequired,
 }
 

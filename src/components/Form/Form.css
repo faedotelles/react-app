@@ -1,19 +1,32 @@
 .form {
-    margin-top: 50px;
+    margin-top: -10px;
     display: flex;
     align-items: center;
     justify-content: center;
 }
 
 .form input {
-    height: 38px;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    -o-user-select: none;
+    font-family: 'Ubuntu';
+    font-size: 32.5px;
+    font-weight: 500;
+    text-align: center center;
+    border-radius: 10px;
+    height: 100px;
+    width: 240px;
     padding: 0 20px;
-    font-size: 20px;
+    margin-top: 0px;
+    margin-bottom: -40px;
     border: 1px solid #ccc;
-    min-width: 80%;
+    
 }
 
 .form button {
+    display: none;
     cursor: pointer;
     margin-left: 5px;
     border-radius: 3px;
@@ -22,7 +35,7 @@
     width: 40px;
     background: #f04c64;
     color: #fff;
-    display: flex;
     align-items: center;
     justify-content: center;
 }
+
