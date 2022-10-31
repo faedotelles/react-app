@@ -1,4 +1,6 @@
-import * as React from 'react';
+import React, { useEffect } from 'react';
+
+// dialog necessary
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
@@ -7,71 +9,134 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import { TransitionProps } from '@mui/material/transitions';
 import Slide from '@mui/material/Slide';
-
-import './Dialog.css'
-
-import template from '../png/box.png'
-
+import { FaWindowClose } from 'react-icons/fa'
 import { FaSearch } from 'react-icons/fa'
 
-function Example( {data , tipo} ){
-    console.log(tipo)
-    if(tipo === 'base64'){
-    return <img src={`data:image/jpeg;base64,${data}`}  className="image"/>}
-    else if (tipo === 'not-found'){
-    return <img src={template} className="not-found"/>
+// img
+import template from '../png/box.png'
+
+// css
+import './Dialog.css'
+
+// adiciona uma img data to jpg
+function Base64toIMG({ data, tipo }) {
+    if (tipo === 'base64') {
+        return <img src={`data:image/jpeg;base64,${data}`} className="image" />
+    }
+    else if (tipo === 'not-found') {
+        return <img src={template} className="not-found" />
     } else {
-        return <h3>Produto sem Imagem</h3>
+        return <h3> Produto sem Imagem</h3>
     }
 }
 
+// é numero?
+function isNumber(event) {
+    event = (event) ? event : window.event;
+    var charCode = (event.which) ? event.which : event.keyCode;
+    if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+        return false
+    } else { return true }
+}
 
+// invalida 0 possívelmente refaturar por if(num)
+function codeValid(num) {
+    const numero = Number(num)
+    if (numero) {
+        return true
+    } else {
+        return false
+    }
+}
+
+// aviso por entender que isso só funciona em Typescript, para desabilitar a tarja desabilite o @vscode.typescript-language-features
 const Transition = React.forwardRef(function Transition(
     props: TransitionProps & {
         children: React.ReactElement;
-    },ref: React.Ref<unknown>,
-    
+    }, ref: React.Ref<unknown>,
+
 ) {
     return <Slide direction="up" ref={ref} {...props} />;
 });
 
-export default function AlertDialog({ handleShow, price, iditem, image, handleGetImage, tipo, descricao }) {
+export default function AlertDialog({ handleShow, price, iditem, image, tipo, descricao, handleWipe, handleListen, handleReturn, handleDelete }) {
     const [open, setOpen] = React.useState(false);
-    const getPreco = (price)=>{
-        if(price == 'Produto não encontrado'){
+    const getPreco = (price) => {
+        if (price == 'Produto não encontrado') {
             return <h3>{price}</h3>
-        }else {
-            return 'R$ '+Number(price).toFixed(2)
+        } else {
+            return 'R$' + Number(price).toFixed(2)
         }
     }
 
-    const getDescricao = (descricao)=>{
-        if(descricao){
+    // pega descrição do item
+    const getDescricao = (descricao) => {
+        if (descricao) {
             return <h2>{descricao}</h2>
-        }else{
+        } else {
             return <></>
         }
     }
 
-
-
-
+    // abre o dialog, TimeOut temporário até receber um ok que tudo carregou
     const handleClickOpen = () => {
         setTimeout(() => {
             setOpen(true);
-        }, 800);
+        }, 400);
     };
 
+    // fecha o dialog
     const handleClose = () => {
         setOpen(false);
     };
 
-    return (
+    // listener para inserir número visto que o INPUT é readOnly e também pesquisar com enter
+    useEffect(() => {
+        const onKey = (event) => {
+            if (isNumber(event)) {
+                handleListen(event.key)
+            }
+            if (event.key == 'Enter') {
+                if (codeValid(handleReturn())) {
+                    handleShow()
+                    handleClickOpen()
+                }
 
+            }
+        };
+
+        window.addEventListener('keypress', onKey);
+
+        return () => {
+            window.removeEventListener('keypress', onKey);
+        }
+    }, []);
+
+    // listener para ler o BACKSPACE para apagar usando handleDelete e também aspas simples --> ' <-- para limpar
+    /// Motivo de usar dois listener é porque o BACKSPACE não é pego por alguns, refaturar para apenas keydown
+    useEffect(() => {
+        const onKey = (event) => {
+            if (event.keyCode === 8) {
+                handleDelete()
+            }
+            if (event.keyCode === 192) {
+                handleWipe()
+            }
+        };
+
+        window.addEventListener('keydown', onKey);
+
+        return () => {
+            window.removeEventListener('keydown', onKey);
+        }
+    }, []);
+    return (
         <div>
-            <Button className='search' variant="contained" onClick={function (event) {handleShow(iditem);handleClickOpen()}}>
+            
+            <Button className='search' variant="contained" onClick={function (event) { if (codeValid(iditem)) { handleShow(iditem); handleClickOpen() } else { handleWipe() } }} >
                 <FaSearch />
             </Button>
+
             <Dialog className="dialog"
                 fullScreen={true}
                 open={open}
@@ -83,21 +148,23 @@ export default function AlertDialog({ handleShow, price, iditem, image, handleGe
                 <DialogTitle id="alert-dialog-title">
                     {"Preço do Produto"}
                 </DialogTitle>
-                
+
                 <DialogContent>
-                    <DialogContentText id="alert-dialog-description">
-                        {getPreco(price)}<br/>
-                        <Example data={image} tipo={tipo}/><br/>
+                  
+                    <DialogContentText id="alert-dialog-description" component={'div'}>
+                        {getPreco(price)}<br />
+                        <Base64toIMG data={image} tipo={tipo} /><br />
                         {getDescricao(descricao)}
                     </DialogContentText>
+                
                 </DialogContent>
+
                 <DialogActions>
-                    <Button onClick={handleClose}>Disagree</Button>
-                    <Button onClick={handleClose} autoFocus>
-                        Agree
-                    </Button>
+                    <Button onClick={handleClose} ><FaWindowClose /></Button>
                 </DialogActions>
+
             </Dialog>
+        
         </div>
     );
 }
