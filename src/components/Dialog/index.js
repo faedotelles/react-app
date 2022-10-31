@@ -9,7 +9,8 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import { TransitionProps } from '@mui/material/transitions';
 import Slide from '@mui/material/Slide';
-import { FaWindowClose } from 'react-icons/fa'
+import { FaSol } from 'react-icons/fa'
+import { AiFillCloseCircle } from 'react-icons/ai'
 import { FaSearch } from 'react-icons/fa'
 
 // img
@@ -17,6 +18,24 @@ import template from '../png/box.png'
 
 // css
 import './Dialog.css'
+
+const diferencaCents = 0.90;
+const diferencaPorCento = 0.10;
+
+// validações de preço
+const getPreco = (price, priceAnt) => {
+    if (price === 'Produto não encontrado' || price === 0) {
+        return <h3>{price}</h3>
+    } 
+    else if((priceAnt - price > diferencaCents || (priceAnt - price) / price > diferencaPorCento ) && price > diferencaCents){
+        return <div className="preco"><p className="precoant">{priceAnt}</p><p> R$ {Number(price).toFixed(2)}</p></div>
+    }
+    else {
+        return 'R$' + Number(price).toFixed(2)
+    }
+}
+
+
 
 // adiciona uma img data to jpg
 function Base64toIMG({ data, tipo }) {
@@ -59,15 +78,9 @@ const Transition = React.forwardRef(function Transition(
     return <Slide direction="up" ref={ref} {...props} />;
 });
 
-export default function AlertDialog({ handleShow, price, iditem, image, tipo, descricao, handleWipe, handleListen, handleReturn, handleDelete }) {
+export default function AlertDialog({ handleShow, price, priceAnt,  iditem, image, tipo, descricao, handleWipe, handleListen, handleReturn, handleDelete }) {
     const [open, setOpen] = React.useState(false);
-    const getPreco = (price) => {
-        if (price == 'Produto não encontrado') {
-            return <h3>{price}</h3>
-        } else {
-            return 'R$' + Number(price).toFixed(2)
-        }
-    }
+    
 
     // pega descrição do item
     const getDescricao = (descricao) => {
@@ -82,8 +95,16 @@ export default function AlertDialog({ handleShow, price, iditem, image, tipo, de
     const handleClickOpen = () => {
         setTimeout(() => {
             setOpen(true);
-        }, 400);
+        }, 700);
     };
+    
+    const handleReturnButton =() => {
+        return (
+            <DialogActions >
+                    <button className="botaoclose" onClick={handleClose} ><AiFillCloseCircle /></button>
+            </DialogActions>
+        )
+    }
 
     // fecha o dialog
     const handleClose = () => {
@@ -141,29 +162,27 @@ export default function AlertDialog({ handleShow, price, iditem, image, tipo, de
                 fullScreen={true}
                 open={open}
                 onClose={handleClose}
-                aria-labelledby="alert-dialog-title"
+                aria-labelledby="titulo"
                 aria-describedby="alert-dialog-description"
                 TransitionComponent={Transition}
             >
-                <DialogTitle id="alert-dialog-title">
+                <DialogTitle id="titulo">
                     {"Preço do Produto"}
                 </DialogTitle>
 
                 <DialogContent>
                   
                     <DialogContentText id="alert-dialog-description" component={'div'}>
-                        {getPreco(price)}<br />
+                        {getPreco(price, priceAnt)}<br />
                         <Base64toIMG data={image} tipo={tipo} /><br />
                         {getDescricao(descricao)}
                     </DialogContentText>
                 
                 </DialogContent>
+                    <button className="botaoclose" onClick={handleClose} ><AiFillCloseCircle /></button>
 
-                <DialogActions>
-                    <Button onClick={handleClose} ><FaWindowClose /></Button>
-                </DialogActions>
-
-            </Dialog>
+                </Dialog>
+                
         
         </div>
     );

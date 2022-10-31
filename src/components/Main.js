@@ -17,6 +17,7 @@ const Home = class extends Component {
     state = {
         inputBar: '',
         priceShow: '',
+        priceAnt: '',
         image64: '',
         tipo: '',
         descricao: '',
@@ -92,6 +93,7 @@ const Home = class extends Component {
                     })
                     this.setState({
                         priceShow: response[0].PRECO,
+                        priceAnt: response[0].PRECOANT,
                         descricao: response[0].DESCRICAO,
                         inputBar: ''
                     })
@@ -109,7 +111,7 @@ const Home = class extends Component {
     }
 
     render() {
-        const { inputBar, priceShow, image64, tipo, descricao } = this.state;
+        const { inputBar, priceShow, priceAnt, image64, tipo, descricao } = this.state;
         return (
             <div className="main">
                 <Form handleChanged={this.handleChanged}
@@ -125,6 +127,7 @@ const Home = class extends Component {
                 </div>
                 <div className="keypad-line">
                     <span ><AlertDialog price={priceShow}
+                        priceAnt={priceAnt}
                         handleShow={this.handleShow}
                         iditem={inputBar}
                         image={image64}

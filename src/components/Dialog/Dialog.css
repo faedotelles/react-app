@@ -1,15 +1,19 @@
-
+* {
+    zoom: 99%;
+}
 .search {
     display: none;
     height: 70px;
     width: 280px;
 }
-#alert-dialog-title {
-    height: 40px;
-    font-size: 27px;
-    margin-top: 15px;
-    margin-bottom: 5px;
+
+#titulo {
+    height: 30px;
+    font-size: 25px;
+    margin-top: 10px;
     font-weight: 700;
+    padding-top: 9px;
+    padding-bottom: 18px;
     text-align: center;
     font-family: 'Ubuntu';
     background: #e9e9e9;
@@ -37,14 +41,41 @@
     margin-bottom: -160px;
 }
 
-.image{
-    margin-top: -10px;
+.image {
     max-height: 300px;
+    margin-bottom: -40px;
 }
 
-.not-found{
+.not-found {
     margin-top: 20px;
     height: 300px;
 }
 
-  
+.preco {
+    margin-top: -90px;
+    margin-bottom: -195px;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    margin-left: -110px;
+}
+
+.precoant {
+    color: rgb(41, 41, 41);
+    font-size: 50px;
+    opacity: 50%;
+    text-decoration: line-through;
+}
+
+.botaoclose {
+    background: none;
+    margin-bottom: 50px;
+    color: rgb(41, 41, 41);
+    cursor: pointer;
+    font-size: 60px;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    border: none;
+    transition: all 600ms;
+}
