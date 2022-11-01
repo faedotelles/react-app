@@ -72,7 +72,6 @@ const Home = class extends Component {
         }
     }
 
-
     // faz todas validações como se existe preço com imagem, imagem com preço, item sem preço
     handleShow = () => {
         const { inputBar } = this.state
@@ -122,7 +121,6 @@ const Home = class extends Component {
                         handleButton={this.handleButton}
                         handleWipe={this.handleWipe}
                         handleDelete={this.handleDelete}
-                        handleSearch={this.handleSearch}
                     />
                 </div>
                 <div className="keypad-line">

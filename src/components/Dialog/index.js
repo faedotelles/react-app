@@ -19,7 +19,7 @@ import template from '../png/box.png'
 // css
 import './Dialog.css'
 
-const diferencaCents = 0.90;
+const diferencaCents = 0.9;
 const diferencaPorCento = 0.10;
 
 // validações de preço

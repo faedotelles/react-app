@@ -4,7 +4,7 @@ import { AiFillDelete } from 'react-icons/ai'
 import { FaBackspace} from 'react-icons/fa'
 import PropTypes from 'prop-types';
 
-export default function Keypad({ handleButton, handleWipe, handleDelete, iditem }) {
+export default function Keypad({ handleButton, handleWipe, handleDelete }) {
     const keys = [];
     var keyAtual = 1;
     for (let i = 1; i <= 4; i++) {
@@ -22,10 +22,8 @@ export default function Keypad({ handleButton, handleWipe, handleDelete, iditem 
         }
         keys.push(<div key={i} className="keypad-line">{keypads}</div>)
     }
-    
     return <span className="keypad">{keys}</span>
 }
-
 
 Keypad.propTypes = {
     handleButton: PropTypes.func.isRequired,

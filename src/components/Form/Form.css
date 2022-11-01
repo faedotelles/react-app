@@ -1,5 +1,5 @@
 .form {
-    margin-top: -10px;
+    margin-top: -30px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -16,26 +16,11 @@
     font-weight: 500;
     text-align: center center;
     border-radius: 10px;
-    height: 100px;
-    width: 240px;
+    height: 80px;
+    width: 268px;
     padding: 0 20px;
     margin-top: 0px;
     margin-bottom: -40px;
     border: 1px solid #ccc;
     
 }
-
-.form button {
-    display: none;
-    cursor: pointer;
-    margin-left: 5px;
-    border-radius: 3px;
-    border: none;
-    height: 40px;
-    width: 40px;
-    background: #f04c64;
-    color: #fff;
-    align-items: center;
-    justify-content: center;
-}
-
