@@ -10,10 +10,14 @@ const serverAtual = (serverDev)
 
 export default async function getPrice (iditem){
     try {
-        const response = await axios.get(`http://${serverAtual}/itemprvda/1000/${iditem}`)
-        return response.data
+        const [getPrice, getImagem] = await Promise.all([
+            axios.get(`http://${serverAtual}/itemprvda/1000/${iditem}`),
+            axios.get(`http://${serverAtual}/itemimagem/1000/${iditem}`)
+        ])
+        return(
+            [getPrice.data[0], getImagem.data]
+        )
     } catch (err) {
-        console.error(err)
     }
 }
 

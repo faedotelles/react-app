@@ -2,7 +2,6 @@ import React, { Component } from "react";
 
 // gets
 import getPrice from "../services/itemprvda";
-import getImagem from '../services/itemimagem'
 
 // htmls
 import Form from "./Form";
@@ -57,7 +56,10 @@ const Home = class extends Component {
     // limpa input
     handleWipe = () => {
         this.setState({
-            inputBar: ''
+            inputBar: '',
+            tipo: 'blank',
+            image64: '',
+            priceShow: ''
         })
     }
 
@@ -73,40 +75,75 @@ const Home = class extends Component {
     }
 
     // faz todas validações como se existe preço com imagem, imagem com preço, item sem preço
+    // handleShow = () => {
+    //     const { inputBar } = this.state
+    //     if (inputBar !== '') {
+    //         getPrice(inputBar).then((response) => {
+    //             if (response[0].PRECO !== undefined) {
+    //                 getImagem(inputBar).then((result) => {
+    //                     if (result === '') {
+    //                         this.setState({
+    //                             tipo: 'no-image',
+    //                         })
+    //                     } else {
+    //                         this.setState({
+    //                             tipo: 'base64',
+    //                             image64: result,
+    //                         })
+    //                     }
+    //                 })
+    //                 this.setState({
+    //                     priceShow: response[0].PRECO,
+    //                     priceAnt: response[0].PRECOANT,
+    //                     descricao: response[0].DESCRICAO,
+    //                     inputBar: ''
+    //                 })
+    //             }
+    //         })
+    //             .catch((err) => {
+    //                 this.setState({
+    //                     priceShow: 'Produto não encontrado',
+    //                     tipo: 'not-found',
+    //                     inputBar: '',
+    //                     descricao: '',
+    //                 })
+    //             })
+    //     }
+    // }
+
     handleShow = () => {
-        const { inputBar } = this.state
-        if (inputBar !== '') {
-            getPrice(inputBar).then((response) => {
-                if (response[0].PRECO !== undefined) {
-                    getImagem(inputBar).then((result) => {
-                        if (result === '') {
-                            this.setState({
-                                tipo: 'no-image',
-                            })
-                        } else {
-                            this.setState({
-                                tipo: 'base64',
-                                image64: result,
-                            })
-                        }
-                    })
+        const {inputBar, priceShow} = this.state;
+        getPrice(inputBar).then((response) => {
+            console.log(response[0].DESCRICAO)
+            if(response[0].PRECO !== 0){
+                if(response[1] !== ''){
                     this.setState({
-                        priceShow: response[0].PRECO,
-                        priceAnt: response[0].PRECOANT,
-                        descricao: response[0].DESCRICAO,
-                        inputBar: ''
+                        tipo: 'base64',
+                        image64: response[1],
                     })
                 }
-            })
-                .catch((err) => {
+                else if (response[1] === '') {
                     this.setState({
-                        priceShow: 'Produto não encontrado',
-                        tipo: 'not-found',
-                        inputBar: '',
-                        descricao: '',
+                        tipo: 'no-image'
                     })
+                }
+                this.setState({
+                    priceShow: response[0].PRECO,
+                    descricao: response[0].DESCRICAO,
+                    priceAnt: response[0].PRECOANT,
+                    inputBar: '',
                 })
-        }
+            }
+        }).catch((err) => {
+            {
+                this.setState({
+                    priceShow: 'Produto não encontrado',
+                    tipo: 'not-found',
+                    inputBar: '',
+                    descricao: '',
+                })
+            }
+        })
     }
 
     render() {

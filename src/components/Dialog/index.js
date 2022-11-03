@@ -44,8 +44,12 @@ function Base64toIMG({ data, tipo }) {
     }
     else if (tipo === 'not-found') {
         return <img src={template} className="not-found" />
-    } else {
-        return <h3> Produto sem Imagem</h3>
+    }
+    else if (tipo === 'no-image') {
+        return <h3>Produto sem Imagem</h3>
+    }
+    else if (tipo === 'blank'){
+        return <></>
     }
 }
 
@@ -97,14 +101,6 @@ export default function AlertDialog({ handleShow, price, priceAnt,  iditem, imag
             setOpen(true);
         }, 700);
     };
-    
-    const handleReturnButton =() => {
-        return (
-            <DialogActions >
-                    <button className="botaoclose" onClick={handleClose} ><AiFillCloseCircle /></button>
-            </DialogActions>
-        )
-    }
 
     // fecha o dialog
     const handleClose = () => {
@@ -179,7 +175,7 @@ export default function AlertDialog({ handleShow, price, priceAnt,  iditem, imag
                     </DialogContentText>
                 
                 </DialogContent>
-                    <button className="botaoclose" onClick={handleClose} ><AiFillCloseCircle /></button>
+                    <button className="botaoclose" onClick={function (event) {handleClose (); setTimeout(function (){handleWipe();}, 300)}} ><AiFillCloseCircle /></button>
 
                 </Dialog>
                 
